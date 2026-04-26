@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - HairSafe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="pro-header">
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/hair-fall-control.jpeg" alt="HairSafe Logo" class="site-logo">
+                <h1>HairSafe</h1>
+            </a>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#treatments">Treatments</a>
+            <a href="index.html#products">Products</a>
+        </nav>
+        <div class="header-cta">
+            <a href="tel:+919705674685" class="contact-number"><i class="fas fa-phone-alt"></i> +91 9705674685</a>
+            <button id="dark-mode-toggle" class="dark-mode-btn"><i class="fas fa-moon"></i></button>
+            <a href="cart.html" class="cart-button">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-counter" class="cart-counter">0</span>
+            </a>
+            <a href="login.html" class="cta-button">My Account</a>
+        </div>
+    </header>
+
+    <main class="payment-page">
+        <h2><i class="fas fa-credit-card"></i> Checkout</h2>
+        
+        <!-- Progress Bar -->
+        <div class="cart-progress">
+            <div class="progress-step"><span>1</span> Cart</div>
+            <div class="progress-step active"><span>2</span> Checkout</div>
+            <div class="progress-step"><span>3</span> Payment</div>
+        </div>
+
+        <div class="checkout-container">
+            <div class="payment-form">
+                <h3>Select Payment Method</h3>
+                <form id="main-payment-form">
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="card" checked>
+                            <i class="fas fa-credit-card"></i>
+                            <span>Credit / Debit Card</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="upi">
+                            <i class="fab fa-google-pay"></i>
+                            <span>UPI</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="cod">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <span>Cash on Delivery</span>
+                        </label>
+                    </div>
+
+                    <!-- Card Payment -->
+                    <div id="card-payment-content" class="payment-content">
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="name" placeholder="Cardholder Name" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-credit-card"></i>
+                            <input type="text" id="card-number" placeholder="Card Number" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <i class="fas fa-calendar"></i>
+                                <input type="text" id="expiry" placeholder="MM/YY" required>
+                            </div>
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input type="text" id="cvv" placeholder="CVV" required>
+                            </div>
+                        </div>
+                        <img src="https://i.postimg.cc/Yq7g4cXv/cards.png" alt="Accepted Cards" class="card-icons">
+                    </div>
+
+                    <!-- UPI Payment -->
+                    <div id="upi-payment-content" class="payment-content" style="display: none;">
+                        <div class="upi-container">
+                            <img src="https://i.postimg.cc/13YpQ695/sample-qr-code.png" alt="QR Code" class="qr-code">
+                            <p class="upi-id"><i class="fab fa-google-pay"></i> hairsafeofficial@upi</p>
+                            <button type="button" class="copy-upi" onclick="copyUpiId()">Copy UPI ID</button>
+                        </div>
+                    </div>
+
+                    <!-- COD Payment -->
+                    <div id="cod-payment-content" class="payment-content" style="display: none;">
+                        <div class="cod-info">
+                            <i class="fas fa-truck"></i>
+                            <p>Pay in cash when your order arrives at your doorstep.</p>
+                            <p class="cod-note">Keep exact change ready for faster delivery.</p>
+                        </div>
+                    </div>
+
+                    <!-- Trust Badge -->
+                    <div class="trust-badge-checkout">
+                        <i class="fas fa-lock"></i> 256-bit SSL Secure
+                        <i class="fas fa-shield-alt"></i> Buyer Protection
+                    </div>
+                    
+                    <button type="submit" id="submit-payment-btn">Pay Now</button>
+                </form>
+            </div>
+
+            <div class="order-summary" id="order-summary">
+                <h3>Order Summary</h3>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Popup -->
+    <div id="order-success-popup" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <div class="success-animation">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 id="popup-title">Order Placed!</h2>
+            <p id="popup-message">Thank you for your purchase. Your order is being processed.</p>
+            <div class="tracking-info" id="tracking-info" style="display: none;">
+                <p><i class="fas fa-truck"></i> Tracking ID: <span id="tracking-id"></span></p>
+                <div class="tracking-progress">
+                    <div class="tracking-step"><i class="fas fa-check-circle"></i> Ordered</div>
+                    <div class="tracking-step"><i class="fas fa-circle"></i> Shipped</div>
+                    <div class="tracking-step"><i class="fas fa-circle"></i> Out for Delivery</div>
+                    <div class="tracking-step"><i class="fas fa-circle"></i> Delivered</div>
+                </div>
+            </div>
+            <a href="index.html" class="cta-button">Continue Shopping</a>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="toast"></div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-column about">
+                <h4>HairSafe</h4>
+                <p>Your dedicated partner in proactive hair wellness.</p>
+            </div>
+            <div class="footer-column links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html#about">About Us</a></li>
+                    <li><a href="index.html#treatments">Treatments</a></li>
+                    <li><a href="index.html#products">Products</a></li>
+                </ul>
+            </div>
+            <div class="footer-column contact">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:hairsafeofficial@gmail.com">hairsafeofficial@gmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 HairSafe. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
